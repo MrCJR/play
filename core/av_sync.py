@@ -4,5 +4,7 @@ class AVSync:
         pass
 
     def sync(self, video_frames, audio_frames):
-        # 这里可以实现音视频同步逻辑，暂时直接返回视频帧
+        # 这里实现音视频同步逻辑
+        # 例如，根据音频和视频的时间戳对齐帧
+        # 暂时直接返回视频帧
         return video_frames

@@ -1,7 +1,8 @@
 # main.py
+# main.py
 import sys
 from PyQt5.QtWidgets import QApplication
-from gui.video_player_window import VideoPlayerWindow
+from gui.player_gui import VideoPlayerWindow
 
 # 程序入口
 if __name__ == "__main__":

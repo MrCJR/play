@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLabel, QFileDialog
 from PyQt5.QtCore import QThread, pyqtSignal
-from core.file import FileManager
+from core.file_manager import FileManager
 from core.decoder import Decoder
 from core.renderer import Renderer
 
@@ -78,7 +78,7 @@ class VideoPlayerWindow(QWidget):
     def _toggle_play(self):
         if not self.playing:
             # 若当前未播放，弹出文件选择对话框
-            filename, _ = QFileDialog.getOpenFileName(self, '打开文件')
+            filename = self.file_manager.open_file()
             if filename:
                 # 若用户选择了文件，更新标签显示文件名
                 self.label.setText(f"正在播放: {filename}")

@@ -1,5 +1,5 @@
 import os
-from tkinter import filedialog
+from PyQt5.QtWidgets import QFileDialog
 
 # 文件管理类，用于打开文件对话框并记录上次打开的目录
 class FileManager:
@@ -14,10 +14,11 @@ class FileManager:
         elif os.name == 'posix':
             self.last_opened_dir = os.path.join(os.environ['HOME'], 'Downloads')
         # 弹出文件选择对话框
-        filename = filedialog.askopenfilename(
-            title="打开文件",
-            filetypes=(("视频文件", "*.mp4 *.avi *.mkv *.mov"), ("所有文件", "*.*")),
-            initialdir=self.last_opened_dir
+        filename, _ = QFileDialog.getOpenFileName(
+            None,  # 没有父窗口
+            "打开文件",
+            self.last_opened_dir,
+            "视频文件 (*.mp4 *.avi *.mkv *.mov);;所有文件 (*.*)"
         )
         if filename:
             # 若用户选择了文件，更新上次打开的目录
