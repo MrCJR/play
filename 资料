@@ -1,0 +1,71 @@
+ffmpeg -formats | grep -i video
+ffmpeg version 7.1 Copyright (c) 2000-2024 the FFmpeg developers
+
+  E  a64             a64 - video for Commodore 64
+ DE  avi             AVI (Audio Video Interleaved)
+ DE  avs2            raw AVS2-P2/IEEE1857.4 video
+ DE  cavsvideo       raw Chinese AVS (Audio Video Standard) video
+ D   cdxl            Commodore CDXL video
+ D   dhav            Video DAV
+ DE  dv              DV (Digital Video)
+ DE  evc             raw EVC video
+  E  f4v             F4V Adobe Flash Video
+ DE  flv             FLV (Flash Video)
+ D   gdv             Gremlin Digital Video
+ DE  h264            raw H.264 video
+ DE  hevc            raw HEVC video
+ D   ipu             raw IPU Video
+ D   iv8             IndigoVision 8000 video
+ D   ivr             IVR (Internet Video Recording)
+ D   live_flv        live RTMP FLV (Flash Video)
+ D   luodat          Video CCTV DAT
+ DE  m4v             raw MPEG-4 video
+ DE  mjpeg           raw MJPEG video
+ D   mjpeg_2000      raw MJPEG 2000 video
+ D   mlv             Magic Lantern Video (MLV)
+  E  mpeg1video      raw MPEG-1 video
+  E  mpeg2video      raw MPEG-2 video
+ D   mpegvideo       raw MPEG video
+ D   nsv             Nullsoft Streaming Video
+  E  null            raw null video
+ D   nuv             NuppelVideo
+  E  ogv             Ogg Video
+ D   pdv             PlayDate Video
+ DE  rawvideo        raw video
+ D   ser             SER (Simple uncompressed video format for astronomical capturing)
+ DE  vc1             raw VC-1 video
+ DE  vvc             raw H.266/VVC video
+
+
+ffmpeg -formats | grep -i audio
+  D   aac             raw ADTS AAC (Advanced Audio Coding)
+ D   ace             tri-Ace Audio Container
+  E  adts            ADTS AAC (Advanced Audio Coding)
+ DE  aea             MD STUDIO audio
+ DE  aiff            Audio IFF
+ D   ape             Monkey's Audio
+ DE  aptx            raw aptX (Audio Processing Technology for Bluetooth)
+ DE  aptx_hd         raw aptX HD (Audio Processing Technology for Bluetooth)
+ DE  ast             AST (Audio Stream)
+  Ed audiotoolbox    AudioToolbox output device
+ DE  avi             AVI (Audio Video Interleaved)
+ D   avr             AVR (Audio Visual Research)
+ D   binka           Bink Audio
+ D   boa             Black Ops Audio
+ DE  caf             Apple CAF (Core Audio Format)
+ DE  cavsvideo       raw Chinese AVS (Audio Video Standard) video
+ DE  daud            D-Cinema audio
+ D   epaf            Ensoniq Paris Audio File
+ DE  iamf            Raw Immersive Audio Model and Formats
+ D   laf             LAF (Limitless Audio Format)
+ D   loas            LOAS AudioSyncStream
+ D   mca             MCA Audio Format
+  E  mp2             MP2 (MPEG audio layer 2)
+ DE  mp3             MP3 (MPEG audio layer 3)
+  E  oga             Ogg Audio
+ DE  oma             Sony OpenMG audio
+ D   rka             RKA (RK Audio)
+ DE  tta             TTA (True Audio)
+ DE  wav             WAV / WAVE (Waveform Audio)
+ DE  wsaud           Westwood Studios audio
+ D   wve             Psion 3 audio
