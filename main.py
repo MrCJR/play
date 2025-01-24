@@ -1,9 +1,9 @@
 import sys
-from gui.main_window import MainWindow
+from gui.ui import create_app
 
-if __name__ == '__main__':
-    # 创建主窗口实例
-    window = MainWindow()
-    # 进入主循环
-    window.run()
-    sys.exit()
+if __name__ == "__main__":
+    app,player = create_app()
+    player.show()
+    if len(sys.argv) > 1:
+        player.play_file(sys.argv[1])
+    sys.exit(app.exec())
