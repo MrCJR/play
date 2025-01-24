@@ -1,10 +1,17 @@
-# av_sync.py: 音视频同步
+import time
+
+
 class AVSync:
     def __init__(self):
-        pass
+        # 初始化上一帧时间
+        self.last_frame_time = time.time()
 
-    def sync(self, video_frames, audio_frames):
-        # 这里实现音视频同步逻辑
-        # 例如，根据音频和视频的时间戳对齐帧
-        # 暂时直接返回视频帧
-        return video_frames
+    def sync(self, frame):
+        # 简单模拟音视频同步，这里只是控制帧率
+        current_time = time.time()
+        elapsed_time = current_time - self.last_frame_time
+        # 假设帧率为 30fps
+        frame_interval = 1 / 30
+        if elapsed_time < frame_interval:
+            time.sleep(frame_interval - elapsed_time)
+        self.last_frame_time = current_time

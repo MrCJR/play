@@ -1,46 +1,30 @@
-import ffmpeg
+import subprocess
+import cv2
 import numpy as np
 
-class Decoder:
-    def __init__(self):
-        pass
 
-    def decode(self, filename, playing):
+class VideoDecoder:
+    def __init__(self, file_path):
+        self.file_path = file_path
+        # 使用 FFmpeg 进行解码
+        self.command = ['ffmpeg', '-i', file_path, '-c:v', 'rawvideo', '-pix_fmt', 'bgr24', '-f', 'image2pipe', '-']
+        self.process = subprocess.Popen(self.command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        # 获取视频的宽度和高度
+        cap = cv2.VideoCapture(file_path)
+        self.width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        self.height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        cap.release()
+
+    def decode_frame(self):
         try:
-            # 使用 ffmpeg.probe 获取视频文件的元信息
-            probe = ffmpeg.probe(filename)
-            # 查找视频流信息
-            video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
-            if video_stream is None:
-                print("未找到视频流")
+            # 读取一帧数据
+            raw_image = self.process.stdout.read(self.width * self.height * 3)
+            if not raw_image:
                 return None
-            # 获取视频的宽度和高度
-            width = int(video_stream['width'])
-            height = int(video_stream['height'])
-            # 启动 ffmpeg 进程进行解码，将输出以原始视频格式（RGB24）输出到标准输出流
-            process = (
-                ffmpeg
-                .input(filename)
-                .output('pipe:', format='rawvideo', pix_fmt='rgb24')
-                .run_async(pipe_stdout=True)
-            )
-            # 存储解码后的视频帧
-            frames = []
-            while playing:
-                # 从标准输出流读取视频帧数据
-                in_bytes = process.stdout.read(width * height * 3)
-                if not in_bytes:
-                    break
-                # 将字节数据转换为 numpy 数组，并调整形状为视频帧的尺寸
-                frame = np.frombuffer(in_bytes, np.uint8).reshape([height, width, 3])
-                frames.append(frame)
-            # 关闭 ffmpeg 进程
-            process.stdout.close()
-            process.wait()
-            return frames
-        except FileNotFoundError:
-            print(f"文件 {filename} 不存在")
-            return None
+            # 将数据转换为 numpy 数组
+            image = np.frombuffer(raw_image, dtype=np.uint8)
+            image = image.reshape((self.height, self.width, 3))
+            return image
         except Exception as e:
-            print(f"解码错误: {e}")
+            print(f"解码出错: {e}")
             return None
