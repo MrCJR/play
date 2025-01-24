@@ -1,5 +1,4 @@
 # main.py
-# main.py
 import sys
 from PyQt5.QtWidgets import QApplication
 from gui.player_gui import VideoPlayerWindow

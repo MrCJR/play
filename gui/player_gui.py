@@ -78,7 +78,9 @@ class VideoPlayerWindow(QWidget):
     def _toggle_play(self):
         if not self.playing:
             # 若当前未播放，弹出文件选择对话框
-            filename = self.file_manager.open_file()
+            filename, _ = QFileDialog.getOpenFileName(self, '打开文件')
+            # 确保文件选择对话框获得焦点
+            self.activateWindow()
             if filename:
                 # 若用户选择了文件，更新标签显示文件名
                 self.label.setText(f"正在播放: {filename}")
@@ -99,6 +101,7 @@ class VideoPlayerWindow(QWidget):
             self.playing = False
             # 更新播放按钮文本为“播放”
             self.play_button.setText("播放")
+
 
     def _play_finished(self):
         # 播放完成后，更新播放状态标志
