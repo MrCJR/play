@@ -119,9 +119,9 @@
 
 ## 开发者信息
 - 如果您有任何问题或建议，请提交 Issue 或联系开发者。
-
+- https://github.com/MrCJR/play.git
 ---
-https://github.com/MrCJR/play.git
+
 Happy coding! 😊
 
 ---
