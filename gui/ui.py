@@ -1,4 +1,3 @@
-
 import sys
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication, QPushButton, QVBoxLayout, QHBoxLayout, QSlider, QLabel
@@ -36,7 +35,7 @@ class PlayerUI(Player):
 
         # 音量滑块
         self.volume_slider = QSlider()
-        self.volume_slider.setOrientation(Qt.Horizontal)  # 水平滑动
+        self.volume_slider.setOrientation(Qt.Orientation.Horizontal)  # 水平滑动
         self.volume_slider.setRange(0, 100)
         self.volume_slider.setValue(50)
         self.volume_slider.valueChanged.connect(self.set_volume)
@@ -48,8 +47,8 @@ class PlayerUI(Player):
 
         # 布局设置
         controls_layout = QHBoxLayout()
-        controls_layout.addWidget(self.play_button)
         controls_layout.addWidget(self.select_file_button)
+        controls_layout.addWidget(self.play_button)
         controls_layout.addWidget(self.volume_slider)
 
         main_layout = QVBoxLayout()
