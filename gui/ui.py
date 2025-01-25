@@ -7,20 +7,6 @@ from core.player import Player  # 请确保 core.player 路径正确
 from core.file import FileHandler  # 导入文件选择逻辑
 
 
-def load_stylesheet(qss_file):
-    """
-    加载 QSS 文件。
-    """
-    try:
-        base_path = os.path.dirname(__file__) if "__file__" in globals() else os.getcwd()
-        qss_path = os.path.join(base_path, "static", "qss", qss_file)
-        with open(qss_path, "r") as file:
-            return file.read()
-    except FileNotFoundError:
-        print(f"QSS file not found: {qss_path}")
-        return ""
-
-
 class PlayerUI(Player):
     """
     媒体播放器 UI，负责界面布局。
@@ -107,8 +93,5 @@ class PlayerUI(Player):
         """
         app = QApplication(sys.argv)
         app.setStyle("Fusion")
-        stylesheet = load_stylesheet("style.qss")
-        if stylesheet:
-            app.setStyleSheet(stylesheet)
         player_ui = PlayerUI()
         return app, player_ui
