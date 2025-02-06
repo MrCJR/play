@@ -27,6 +27,6 @@ class FileHandler:
         """
         default_folder = self.get_default_download_folder()
         file_path, _ = QFileDialog.getOpenFileName(
-            None, "Select Media File", default_folder, "Media Files (*.mp3 *.wav *.ogg *.mp4 *.avi *.mkv)"
+            None, "查看媒体文件", default_folder, "媒体文件类型 (*.mp3 *.wav *.ogg *.mp4 *.avi *.mkv)"
         )
         return file_path
