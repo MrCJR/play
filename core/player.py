@@ -1,8 +1,11 @@
 from PySide6.QtCore import QUrl
-from PySide6.QtWidgets import QWidget, QMessageBox, QFileDialog
+from PySide6.QtWidgets import QWidget, QMessageBox
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 import os
 import logging
+# 导入 FileHandler 类
+from core.file import FileHandler
+
 
 # 设置日志基础配置
 logging.basicConfig(
@@ -14,12 +17,14 @@ logging.basicConfig(
 
 class Player(QWidget):
     """
-    媒体播放器组件，负责播放逻辑和信号处理。
+    媒体播放器组件,负责播放逻辑和信号处理。
     """
 
     def __init__(self):
         super().__init__()
         self.init_player()
+        # 初始化 FileHandler 实例
+        self.file_handler = FileHandler()
 
     def init_player(self):
         """
@@ -33,7 +38,7 @@ class Player(QWidget):
         self.is_playing = False
         self.current_file = None
 
-        # 信号绑定 - 修复此处的 stateChanged 到 playbackStateChanged
+        # 信号绑定
         self.media_player.mediaStatusChanged.connect(self.handle_media_status)
         self.media_player.playbackStateChanged.connect(self.update_play_state)
 
@@ -42,8 +47,8 @@ class Player(QWidget):
         处理媒体状态事件。
         """
         if status == QMediaPlayer.MediaStatus.InvalidMedia:
-            QMessageBox.critical(self, "错误", "Failed to load media.")
-            logging.error(f"Invalid media: {self.current_file}")
+            QMessageBox.critical(self, "错误", "加载媒体失败.")
+            logging.error(f"无效的媒体资源: {self.current_file}")
 
     def update_play_state(self, state):
         """
@@ -59,7 +64,7 @@ class Player(QWidget):
         加载并播放媒体文件。
         """
         if not os.path.exists(file_path):
-            QMessageBox.warning(self, "Error", f"File not found: {file_path}")
+            QMessageBox.warning(self, "错误", f"未找到文件: {file_path}")
             return
 
         try:
@@ -69,7 +74,7 @@ class Player(QWidget):
             self.current_file = file_path
             self.is_playing = True
         except Exception as e:
-            QMessageBox.critical(self, "Error", f"Error playing file: {e}")
+            QMessageBox.critical(self, "错误", f"播放文件时出错: {e}")
             logging.error(str(e))
 
     def toggle_play(self):
@@ -93,8 +98,7 @@ class Player(QWidget):
         """
         打开文件选择对话框。
         """
-        file_path, _ = QFileDialog.getOpenFileName(
-            self, "Open Media File", "", "Media Files (*.mp3 *.wav *.ogg *.mp4 *.avi *.mkv)"
-        )
+        # 使用 FileHandler 的 select_file 方法获取文件路径
+        file_path = self.file_handler.select_file()
         if file_path:
             self.play_file(file_path)

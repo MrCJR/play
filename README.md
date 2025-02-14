@@ -13,8 +13,8 @@
 - 支持日志记录功能，帮助排查播放过程中的问题。
 
 ## 使用技术
-- Python 3.x
-- PySide6 (版本：`6.8.1.1`)
+- Python `3.1.3`
+- PySide6`6.8.1.2`
 
 ## 项目结构
    ```
@@ -25,9 +25,7 @@
    ├── gui/
    │   ├── ui.py              # UI 初始化逻辑
    ├── static/
-   │   ├── font/              # 字体文件
    │   ├── icons/             # 图标文件 (.png)
-   │   ├── qss/               # QSS 样式表文件
    ├── main.py                # 入口文件
    ```
 
@@ -60,14 +58,14 @@
 
 ## 安装与使用
 ### 环境要求
-- Python 版本 >= 3.7
+- Python 版本 >= 3.10
 - 操作系统：Windows / MacOS / Linux
 
 ### 安装步骤
 1. 克隆代码到本地：
    ```bash
-   git clone <repository_url>
-   cd <repository_folder>
+   git clone <https://github.com/MrCJR/play.git>
+   cd <https://github.com/MrCJR/play.git>
    ```
 
 2. 创建并激活虚拟环境：
@@ -87,11 +85,6 @@
    python main.py
    ```
 
-5. （可选）直接指定媒体文件播放：
-   ```bash
-   python main.py /path/to/media/file.mp4
-   ```
-
 ## 使用说明
 - 界面布局：
   - **选择文件**：打开文件选择对话框，支持多种媒体格式文件。
@@ -108,20 +101,17 @@
 ## 项目扩展
 该项目已实现基础的媒体播放功能，可以进一步扩展以下功能：
 1. 支持播放列表功能。
-2. 添加播放进度条组件。
+2. <span style="color: green;">添加播放进度条组件。✔已完成（2025/2/14）</span>
 3. 增加更多文件格式支持。
 4. 优化错误处理与提示信息。
 5. 美化用户界面。
 
 ## 已知问题
-- 播放不支持部分格式的媒体文件（建议确保文件编码合法）。
-- 跨平台窗口表现差异可能存在调整空间。
+- 静音按钮功能实现问题。 <span style="color: green;">✔已解决（2025/2/14）</span>
 
 ## 开发者信息
 - 如果您有任何问题或建议，请提交 Issue 或联系开发者。
-- https://github.com/MrCJR/play.git
 ---
-
 Happy coding! 😊
 
 ---
