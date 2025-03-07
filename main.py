@@ -1,3 +1,4 @@
+# main.py
 import sys
 from gui.ui import PlayerUI
 
