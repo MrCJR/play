@@ -77,6 +77,9 @@ class Player(QWidget):
             self._play_local_file(file_path)
 
     def _play_streaming_url(self, url):
+        """
+        处理流媒体资源
+        """
         try:
             url = QUrl(url)
             self.media_player.setSource(url)
@@ -90,6 +93,9 @@ class Player(QWidget):
             logging.error(str(e))
 
     def _play_local_file(self, file_path):
+        """
+        播放本地媒体资源
+        """
         try:
             url = QUrl.fromLocalFile(file_path)
             self.media_player.setSource(url)
