@@ -3,9 +3,9 @@ from PySide6.QtWidgets import QWidget, QMessageBox
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 import os
 import logging
+
 # 导入 FileHandler 类
 from core.file import FileHandler
-
 
 # 设置日志基础配置
 logging.basicConfig(
@@ -17,14 +17,22 @@ logging.basicConfig(
 
 class Player(QWidget):
     """
-    媒体播放器组件,负责播放逻辑和信号处理。
+    媒体播放器组件，负责播放逻辑和信号处理。
+    支持边下载边播放功能。
     """
 
-    def __init__(self):
+    def __init__(self, progress_bar=None, file_info_label=None):
         super().__init__()
         self.init_player()
         # 初始化 FileHandler 实例
         self.file_handler = FileHandler()
+        # 新增：保存进度条和文件信息标签
+        self.progress_bar = progress_bar
+        self.file_info_label = file_info_label
+
+        if self.progress_bar:
+            self.media_player.positionChanged.connect(self.update_progress)
+            self.media_player.durationChanged.connect(self.set_progress_range)
 
     def init_player(self):
         """
@@ -60,19 +68,37 @@ class Player(QWidget):
             self.is_playing = True
 
     def play_file(self, file_path):
-        """
-        加载并播放媒体文件。
-        """
-        if not os.path.exists(file_path):
+        if file_path.startswith(('http://', 'https://')):
+            self._play_streaming_url(file_path)
+        elif not os.path.exists(file_path):
             QMessageBox.warning(self, "错误", f"未找到文件: {file_path}")
             return
+        else:
+            self._play_local_file(file_path)
 
+    def _play_streaming_url(self, url):
+        try:
+            url = QUrl(url)
+            self.media_player.setSource(url)
+            self.media_player.play()
+            self.current_file = url
+            self.is_playing = True
+            if self.file_info_label:
+                self.file_info_label.setText(f"正在播放: {url}")
+        except Exception as e:
+            QMessageBox.critical(self, "错误", f"播放文件时出错: {e}")
+            logging.error(str(e))
+
+    def _play_local_file(self, file_path):
         try:
             url = QUrl.fromLocalFile(file_path)
             self.media_player.setSource(url)
             self.media_player.play()
             self.current_file = file_path
             self.is_playing = True
+            if self.file_info_label:
+                file_name = os.path.basename(file_path)
+                self.file_info_label.setText(f"正在播放: {file_name}")
         except Exception as e:
             QMessageBox.critical(self, "错误", f"播放文件时出错: {e}")
             logging.error(str(e))
@@ -102,3 +128,13 @@ class Player(QWidget):
         file_path = self.file_handler.select_file()
         if file_path:
             self.play_file(file_path)
+
+    # 新增：更新进度条
+    def update_progress(self, position):
+        if self.progress_bar:
+            self.progress_bar.setValue(position)
+
+    # 新增：设置进度条范围
+    def set_progress_range(self, duration):
+        if self.progress_bar:
+            self.progress_bar.setRange(0, duration)

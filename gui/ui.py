@@ -2,12 +2,14 @@ import sys
 import time
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
-    QApplication, QPushButton, QVBoxLayout, QHBoxLayout, QSlider, QLabel, QSizePolicy
+    QApplication, QPushButton, QVBoxLayout, QHBoxLayout, QSlider, QLabel, QSizePolicy,
+    QMessageBox
 )
 from PySide6.QtMultimedia import QMediaPlayer,QAudioOutput
 from PySide6.QtMultimediaWidgets import QVideoWidget
 from core.player import Player
 from core.file import FileHandler
+from PySide6.QtWidgets import QInputDialog
 
 
 class PlayerUI(Player):
@@ -49,8 +51,6 @@ class PlayerUI(Player):
         self.video_widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.media_player.setVideoOutput(self.video_widget)
 
-        # 设置样式表消除外边距和内边距
-        self.video_widget.setStyleSheet("margin: 0px; padding: 0px;")
 
     def init_controls(self):
         """
@@ -62,23 +62,6 @@ class PlayerUI(Player):
 
         self.volume_slider = self.create_slider(0, 100, 50, self.set_volume)
         self.progress_slider = self.create_slider(0, 1000, 0)
-
-        # 设置进度条样式
-        self.progress_slider.setStyleSheet("""
-            QSlider::groove:horizontal {
-                border: 0px solid #999999;
-                height: 8px;
-                background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #B1B1B1, stop:1 #c4c4c4);
-                margin: 0px 0;
-            }
-            QSlider::handle:horizontal {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #b4b4b4, stop:1 #8f8f8f);
-                border: 1px solid #5c5c5c;
-                width: 18px;
-                margin: -2px 0;
-                border-radius: 3px;
-            }
-        """)
 
         # 连接滑块的信号与槽函数
         self.progress_slider.sliderPressed.connect(self.slider_pressed)
@@ -209,11 +192,23 @@ class PlayerUI(Player):
 
     def open_file(self):
         """
-        打开文件选择对话框。
+        打开文件选择对话框或输入流媒体 URL。
         """
-        try:
-            # 通过实例对象调用 select_file 方法
-            selected_file = self.file_handler.select_file()
+        choice, ok = QInputDialog.getItem(self, "选择播放内容", "请选择:", ["本地文件", "流媒体 URL"], 0, False)
+        if ok:
+            if choice == "本地文件":
+                # 通过实例对象调用 select_file 方法
+                selected_file = self.file_handler.select_file()
+            else:
+                url, ok = QInputDialog.getText(self, "输入流媒体 URL", "请输入流媒体 URL:")
+                if ok:
+                    if not url.startswith(('http://', 'https://')):
+                        QMessageBox.warning(self, "错误", "请输入有效的流媒体 URL。")
+                        return
+                    selected_file = url
+                else:
+                    return
+
             if not selected_file:
                 return
 
@@ -222,8 +217,8 @@ class PlayerUI(Player):
             self.play_file(selected_file)
             self.status_label.setText("播放中")
             self.current_file_label.setText(f"当前文件: {selected_file}")
-        except Exception as e:
-            self.status_label.setText(f"文件加载失败: {str(e)}")
+        else:
+            return
 
     def slider_pressed(self):
         """
